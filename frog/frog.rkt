@@ -594,7 +594,7 @@ EOF
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(define (preview [port 3000] [launch-browser #f])
+(define (preview [port 3000])
   ;; `serve/servlet` uses the `send-url` from `net/sendurl`, which
   ;; (unlike the `send-url` from `external/browser`) doesn't prompt
   ;; the user if no external browser preference is set. This can
@@ -607,8 +607,7 @@ EOF
   ;; the above is irrelevant if the user doesn't want to launch
   ;; a browser
   
-  (when (and launch-browser
-           (eq? 'unix (system-type 'os)))
+  (when (eq? 'unix (system-type 'os))
     (unless (get-preference 'external-browser)
       (define ask (dynamic-require 'browser/external 'update-browser-preference))
       (ask #f)))
@@ -616,8 +615,18 @@ EOF
                  #:servlet-path "/"
                  #:extra-files-paths (list (www-path))
                  #:port port
-                 #:launch-browser? launch-browser
+                 #:launch-browser? #t
                  ))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(define (launch [port 3000])
+  ;; Launches the web-server only. This allows us to bypass the GTK
+  ;; Fail that happens when preview is used
+  (serve/servlet (lambda (_) (next-dispatcher))
+                 #:servlet-path "/"
+                 #:extra-files-paths (list (www-path))
+                 #:port port
+                 #:launch-browser? #f))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -727,6 +736,10 @@ EOF
         (""
          "Run a local web server and start your browser on blog home page.")
         (preview)]
+       [("-l" "--launch")
+        (""
+         "Run a local web server")
+        (launch)]
        [("-c" "--clean")
         (""
          "Delete generated files.")
