@@ -606,11 +606,12 @@ EOF
 
   ;; the above is irrelevant if the user doesn't want to launch
   ;; a browser
-  (when launch-browser
-   (when (eq? 'unix (system-type 'os))
-     (unless (get-preference 'external-browser)
-       (define ask (dynamic-require 'browser/external 'update-browser-preference))
-       (ask #f))))
+  
+  (when (and launch-browser
+           (eq? 'unix (system-type 'os)))
+    (unless (get-preference 'external-browser)
+      (define ask (dynamic-require 'browser/external 'update-browser-preference))
+      (ask #f)))
   (serve/servlet (lambda (_) (next-dispatcher))
                  #:servlet-path "/"
                  #:extra-files-paths (list (www-path))
