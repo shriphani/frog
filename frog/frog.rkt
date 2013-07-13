@@ -594,7 +594,7 @@ EOF
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(define (preview [port 3000])
+(define (preview [port 3000] [launch-browser #f])
   ;; `serve/servlet` uses the `send-url` from `net/sendurl`, which
   ;; (unlike the `send-url` from `external/browser`) doesn't prompt
   ;; the user if no external browser preference is set. This can
@@ -611,7 +611,7 @@ EOF
                  #:servlet-path "/"
                  #:extra-files-paths (list (www-path))
                  #:port port
-                 #:launch-browser? #t
+                 #:launch-browser? launch-browser
                  ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
