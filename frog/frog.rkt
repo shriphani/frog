@@ -603,10 +603,6 @@ EOF
   ;; doesn't even prompt the user. So check for this case here, and if
   ;; no browser preference set yet, ask the user, like the `send-url`
   ;; from `external/browser` would do.
-
-  ;; the above is irrelevant if the user doesn't want to launch
-  ;; a browser
-  
   (when (eq? 'unix (system-type 'os))
     (unless (get-preference 'external-browser)
       (define ask (dynamic-require 'browser/external 'update-browser-preference))
