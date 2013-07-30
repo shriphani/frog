@@ -242,7 +242,8 @@
                     (sort string-ci<=? #:key car)))
   (define alist2 (partition-by 3 alist))
   `((p "Tags:"
-       (table ,@(for/list ([row alist2])
+       (table ((class "tags-table"))
+              ,@(for/list ([row alist2])
                   `(tr
                     ,@(for/list ([row-item row])
                         `(td ,(tag->xexpr (car row-item))
