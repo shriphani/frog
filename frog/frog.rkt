@@ -200,7 +200,8 @@
     'table-of-contents (cond [toc? (xexpr->string/pretty (toc-xexpr contents))]
                              [else ""])
     'tag tag
-    'tags/feeds (xexprs->string (tags/feeds))}))
+    'tags/feeds (xexprs->string (tags/feeds))
+    'tags/feeds-table (xexprs->string (tags/feeds-table))}))
 
 (define (xexprs->string xs)
   (string-join (map xexpr->string/pretty xs) "\n"))
