@@ -246,6 +246,7 @@
                   `(tr
                     ,@(for/list ([row-item row])
                         `(td ,(tag->xexpr (car row-item))
+                             " "
                              (a ([href ,(atom-feed-uri (car row-item))])
                                 (img ([src "/img/feed.png"])))))))))
     
