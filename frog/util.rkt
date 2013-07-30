@@ -47,6 +47,26 @@
 (define (re s rx new)
   (regexp-replace rx s new))
 
+;; clojure's partition function
+;; (partition-by 3 '(1 2 3 4 5 6))
+;;; '((1 2 3) (4 5 6))
+(define (partition-by n xs)
+  (foldr
+   (lambda (x acc)
+     (cond [(null? acc)
+            (list (list x))]
+           [(= (length
+                (first acc))
+               n)
+            (cons (list x)
+                  acc)]
+           [else
+            (cons (cons x (first acc))
+                  (rest acc))]))
+   '()
+   xs))
+
+
 (module+ test
   (require rackunit)
   (check-equal? (our-encode "Foo? Bar. Baz.")

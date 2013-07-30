@@ -232,6 +232,26 @@
        (a ([href ,(atom-feed-uri "all")])
           (img ([src "/img/feed.png"])))))))
 
+;; Sort alphabetically by tag name and then put it in a table. I like
+;; this better since it can go in a footer and not look like turd (the
+;; way I do blogging at least)
+(define (tags/feeds-table)
+  (define alist (~> (for/list ([(k v) (in-hash all-tags)])
+                      (cons k v))
+                    (sort string-ci<=? #:key car)))
+  (define alist2 (partition-by 3 alist))
+  `((p "Tags:"
+       (table ,@(for/list ([row alist2])
+                  `(tr
+                    ,@(for/list ([row-item row])
+                        `(td (a ([href ,(atom-feed-uri (first row-item))])
+                                (img ([src "/img/feed.png"])))))))))
+    
+    (p (a ([href "/index.html"]) "All Posts")
+       " "
+       (a ([href ,(atom-feed-uri "all")])
+          (img ([src "/img/feed.png"]))))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define (write-index xs    ;(listof post?) -> any
