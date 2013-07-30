@@ -245,7 +245,8 @@
        (table ,@(for/list ([row alist2])
                   `(tr
                     ,@(for/list ([row-item row])
-                        `(td (a ([href ,(atom-feed-uri (car row-item))])
+                        `(td ,(tag->xexpr (car row-item))
+                             (a ([href ,(atom-feed-uri (car row-item))])
                                 (img ([src "/img/feed.png"])))))))))
     
     (p (a ([href "/index.html"]) "All Posts")
