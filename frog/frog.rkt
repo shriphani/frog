@@ -162,12 +162,14 @@
 
 (define (date+tags->xexpr date tags)
   (define dt (substring date 0 10)) ;; just YYYY-MM-DD
-  `(p ([class "date-and-tags"])
-      (time ([datetime ,dt]
-             [pubdate "true"]) ,dt)
-      " :: "
-      ,@(add-between (map tag->xexpr tags)
-                     ", ")))
+  `(div
+    (p ([class "date-and-tags"])
+       (time ([datetime ,dt]
+              [pubdate "true"]) ,dt))
+    "..."
+    (p ([class "date-and-tags"])
+       ,@(add-between (map tag->xexpr tags)
+                      ", "))))
 
 (define (tag->xexpr s)
   `(a ([href ,(str "/tags/" (our-encode s) ".html")]) ,s))
